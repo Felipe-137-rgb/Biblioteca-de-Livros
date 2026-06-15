@@ -14,7 +14,10 @@ function Register({ irParaLogin }) {
     setSucesso("");
 
     try {
-      await registrar(email, senha);
+      await registrar({
+      email,
+      senha,
+    });
 
       setSucesso(
         "Conta criada com sucesso!"
