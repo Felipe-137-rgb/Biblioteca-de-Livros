@@ -23,7 +23,6 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem("token");
-
       window.location.reload();
     }
 
@@ -37,24 +36,13 @@ export default api;
 // AUTH
 // =======================
 
-export const login = async (email, senha) => {
-  const response = await api.post("/auth/login", {
-    email,
-    senha,
-  });
-
+export const login = async (dados) => {
+  const response = await api.post("/auth/login", dados);
   return response.data;
 };
 
-export const registrar = async (email, senha) => {
-  const response = await api.post(
-    "/auth/registrar",
-    {
-      email,
-      senha,
-    }
-  );
-
+export const registrar = async (dados) => {
+  const response = await api.post("/auth/registrar", dados);
   return response.data;
 };
 
@@ -62,22 +50,22 @@ export const registrar = async (email, senha) => {
 // LIVROS
 // =======================
 
-export const listarLivros = async () =>
-  (await api.get("/livros")).data;
+export const listarLivros = async () => {
+  const response = await api.get("/livros");
+  return response.data;
+};
 
-export const criarLivro = async (livro) =>
-  (await api.post("/livros", livro)).data;
+export const criarLivro = async (livro) => {
+  const response = await api.post("/livros", livro);
+  return response.data;
+};
 
-export const atualizarLivro = async (
-  id,
-  livro
-) =>
-  (
-    await api.put(
-      `/livros/${id}`,
-      livro
-    )
-  ).data;
+export const atualizarLivro = async (id, livro) => {
+  const response = await api.put(`/livros/${id}`, livro);
+  return response.data;
+};
 
-export const removerLivro = async (id) =>
-  await api.delete(`/livros/${id}`);
+export const removerLivro = async (id) => {
+  const response = await api.delete(`/livros/${id}`);
+  return response.data;
+};
