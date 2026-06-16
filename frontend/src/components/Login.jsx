@@ -12,7 +12,10 @@ function Login({ onLogin, irParaRegistro }) {
     setErro("");
 
     try {
-      const resposta = await login(email, senha);
+      const resposta = await login({
+        email,
+        senha,
+      });
 
       localStorage.setItem(
         "token",
@@ -20,11 +23,19 @@ function Login({ onLogin, irParaRegistro }) {
       );
 
       onLogin();
+
     } catch (err) {
-      setErro(
-        err.response?.data?.detail ||
-          "Erro ao fazer login."
-      );
+      console.log("Erro do backend:", err.response?.data);
+
+      const detalhe = err.response?.data?.detail;
+
+      if (typeof detalhe === "string") {
+        setErro(detalhe);
+      } else if (Array.isArray(detalhe)) {
+        setErro(JSON.stringify(detalhe));
+      } else {
+        setErro("Erro ao fazer login.");
+      }
     }
   };
 
@@ -46,9 +57,7 @@ function Login({ onLogin, irParaRegistro }) {
             type="email"
             placeholder="E-mail"
             value={email}
-            onChange={(e) =>
-              setEmail(e.target.value)
-            }
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
 
@@ -56,9 +65,7 @@ function Login({ onLogin, irParaRegistro }) {
             type="password"
             placeholder="Senha"
             value={senha}
-            onChange={(e) =>
-              setSenha(e.target.value)
-            }
+            onChange={(e) => setSenha(e.target.value)}
             required
           />
 
@@ -69,9 +76,7 @@ function Login({ onLogin, irParaRegistro }) {
 
         <p className="link-auth">
           Não possui conta?
-
           <br />
-
           <span onClick={irParaRegistro}>
             Criar conta
           </span>
